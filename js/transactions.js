@@ -16,9 +16,10 @@ document.getElementById("transaction-form").addEventListener("submit", function 
     const description = document.getElementById("description-input").value;
     const date = document.getElementById("date-input").value;
     const type = document.querySelector('input[name="type-input"]:checked').value;
+    const id = data.transactions.length + 1;
 
     data.transactions.unshift({
-        value: value, type: type, description: description, date: date
+        id: id, value: value, type: type, description: description, date: date
     });
 
     saveData(data);
@@ -78,6 +79,7 @@ function getTransactions() {
                     <td>${item.value.toFixed(2)}</td>
                     <td>${type}</td>
                     <td>${item.description}</td>
+                    <td><button type="button" class="btn button-default btn-remove-item" id="remove-btn-${item.id}">Remover</button></td>
                 </tr>            
             `
         })
@@ -88,4 +90,21 @@ function getTransactions() {
 
 function saveData(data) {
     localStorage.setItem(data.login, JSON.stringify(data))
+}
+
+document.getElementById("transactions-table").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    var id = getIdToRemove(e.target.id);
+
+    data.transactions = data.transactions.filter(function(value){
+        return value.id != id;
+    });
+
+    saveData(data);
+    getTransactions();
+});
+
+function getIdToRemove(str){
+    return str.replace("remove-btn-", "");
 }
