@@ -124,5 +124,3 @@ function addEventButtonsRemoveItems() {
 function getIdToRemove(str) {
     return str.replace("remove-btn-", "");
 }
-//teste
-///
